@@ -15,7 +15,7 @@ public class Parse {
 		}
 
 		// write text to a file
-		String fileName = "temp.txt";
+		String fileName = "/Users/yba/Documents/U/Sirius/temp.txt";
 		try {
 			FileWriter fileWriter =
 					new FileWriter(fileName);
@@ -35,7 +35,7 @@ public class Parse {
 			env.setMemory(1024*1024*1024); // 1 GB
 			env.setStemmer("krovetz");
 			env.create("/Users/yba/Documents/U/Sirius/database");
-			env.addFile("/Users/yba/Documents/U/Sirius/text.txt");
+			env.addFile("/Users/yba/Documents/U/Sirius/temp.txt");
 			env.close();
 			System.out.println("documentsIndexed: " + env.documentsIndexed());
 		} catch (Exception e) {
