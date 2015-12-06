@@ -1,5 +1,5 @@
+import org.jsoup.*; // download from http://jsoup.org/
 import java.net.URL;
-import org.jsoup.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import lemurproject.indri.IndexEnvironment;
