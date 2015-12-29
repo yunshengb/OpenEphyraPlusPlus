@@ -53,6 +53,8 @@ public class AnswerSelection {
 									  float minScore) {
 		// apply filters
 		for (Filter filter : filters) {
+//			String index = System.getenv("INDRI_INDEX");
+//      System.out.println("Index: " + index);
 			MsgPrinter.printFilterStarted(filter, results.length);
 			results = filter.apply(results);
 			MsgPrinter.printFilterFinished(filter, results.length);
