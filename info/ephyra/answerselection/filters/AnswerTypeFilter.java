@@ -46,7 +46,7 @@ public class AnswerTypeFilter extends Filter {
 			
 			// split answer string into sentences and tokenize sentences
 			String answer = result.getAnswer();
-			String[] sentences = OpenNLP.sentDetect(answer); // from here 1, ., 2, billion separated
+			String[] sentences = OpenNLP.sentDetect(answer);
 			String[][] tokens = new String[sentences.length][];
 			for (int i = 0; i < sentences.length; i++)
 				tokens[i] = NETagger.tokenize(sentences[i]);
@@ -65,7 +65,6 @@ public class AnswerTypeFilter extends Filter {
 				for (int neId : neIds) {
 					String neType = NETagger.getNeType(neId);
 					String[][] nes = NETagger.extractNes(tokens, neId);
-					// from here on billion is gone
 					
 					for (int i = 0; i < sentences.length; i++) {
 						// untokenize NEs
@@ -103,14 +102,6 @@ public class AnswerTypeFilter extends Filter {
 			allResults[i] = results[i];
 		for (int i = 0; i < newResults.length; i++)
 			allResults[results.length + i] = newResults[i];
-		
-//		// try to find "1344 million"
-//		for (int i = 0; i < newResults.length; i++) {
-//			if (allResults[i].getAnswer().contains("1344 million")) {
-//				System.out.println("find 1344 million at index " + i);
-//			}
-//		}
-//		System.out.println("end of find");
 		
 		return allResults;
 	}

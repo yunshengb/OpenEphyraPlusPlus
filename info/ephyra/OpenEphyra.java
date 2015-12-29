@@ -82,7 +82,7 @@ public class OpenEphyra {
 	 * 
 	 * @param args command line arguments are ignored
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		// enable output of status and error messages
 		MsgPrinter.enableStatusMsgs(true);
 		MsgPrinter.enableErrorMsgs(true);

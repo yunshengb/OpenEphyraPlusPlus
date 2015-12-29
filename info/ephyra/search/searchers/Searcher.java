@@ -39,9 +39,9 @@ public abstract class Searcher extends Thread {
 		if (query != null) {
 			// perform search
 			Result[] results = doSearch();
-			
 			// pass results to class Search
 			Search.addResults(results);
+
 		}
 	}
 }

@@ -549,7 +549,7 @@ public class RegExMatcher {
 	
 	/**	a regular expression capturing group matching all cardinal numbers involving 'million', 'billion' or 'trillion'
 	 */
-	public static final String NUMBER_Xillion = "(([0-9]*\\s(m|b|tr)illion)|((a\\s|one)?\\s(m|b|tr)illion)|(" + NUMBER_TO_HUNDRED + "?\\s(m|b|tr)illion(s)?))";
+	public static final String NUMBER_Xillion = "(((a\\s|one)?\\s(m|b|tr)illion)|(" + NUMBER_TO_HUNDRED + "?\\s(m|b|tr)illion(s)?))";
 	
 	
 	/**	a regular expression capturing group matching all one digit ordinal numbers given in form of words
@@ -912,7 +912,7 @@ public class RegExMatcher {
 	
 	/** a regular expression capturing group matching all cardinal numbers given in form of digits
 	 */ 
-	public static final Pattern NUMBER_PATTERN = compile(NUMBER_Xillion + "|(" + NUMBER + ")");
+	public static final Pattern NUMBER_PATTERN = compile(NUMBER);
 	public static final int NUMBER_MAX_TOKENS = 9;
 	
 	/** a regular expression capturing group matching all ordinal numbers given in form of digits

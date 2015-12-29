@@ -138,6 +138,7 @@ public class Search {
 	public static Result[] doSearch(Query[] queries) {
 		results = new ArrayList<Result>();
 		pending = 0;
+		System.out.println("queries.length == " + queries.length);
 		
 		// send only the first query to the KnowledgeAnnotators
 		if (queries.length > 0) queryKAs(queries[0]);
@@ -183,8 +184,15 @@ public class Search {
 	 */
 	public static void addResults(Result[] results) {
 		synchronized (Search.results) {
-			for (Result result : results) Search.results.add(result);
-
+			// Error handling for case when searcher finds no results
+			if (results == null) {
+				System.out.println("Search returned no results " +
+					"for this query");
+			} else {
+				for (Result result : results) {
+					Search.results.add(result);
+				}
+			}
 			pending--;
 			Search.results.notify();  // signal that the query is completed
 		}

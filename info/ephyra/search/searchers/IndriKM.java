@@ -260,7 +260,7 @@ public class IndriKM extends KnowledgeMiner {
 			MsgPrinter.printSearchError(e);  // print search error message
 			
 			MsgPrinter.printErrorMsg("\nSearch failed.");
-			System.exit(1);
+			//System.exit(1);
 			
 			return null;
 		}

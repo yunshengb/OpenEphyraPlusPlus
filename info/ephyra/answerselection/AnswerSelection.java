@@ -5,7 +5,6 @@ import info.ephyra.io.MsgPrinter;
 import info.ephyra.search.Result;
 
 import java.util.ArrayList;
-import java.util.Arrays; // sort
 
 /**
  * <p>The <code>AnswerSelection</code> component applies <code>Filters</code> to
@@ -56,22 +55,6 @@ public class AnswerSelection {
 		for (Filter filter : filters) {
 			MsgPrinter.printFilterStarted(filter, results.length);
 			results = filter.apply(results);
-			
-//			// try to find the answer
-//			boolean hasFoundMillion = false;
-//			for (Result r : results) {
-//				if (r.getAnswer().contains("1344 million")) {
-//					System.out.println("1344 million found!");
-//					hasFoundMillion = true;
-//				}
-//			}
-//			System.out.println(results[0].getAnswer());
-//			System.out.println(results[0].getScore());
-//			if (!hasFoundMillion) {
-//				System.out.println("The answer \"1344 million\" is gone!");
-//			}
-//			Arrays.sort(results);
-			
 			MsgPrinter.printFilterFinished(filter, results.length);
 		}
 		

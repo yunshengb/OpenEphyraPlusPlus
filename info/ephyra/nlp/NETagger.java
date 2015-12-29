@@ -933,8 +933,6 @@ public class NETagger {
 				if (i < patterns.length) {
 					regEx = patterns[i];
 				} else if (i == patterns.length) {
-					// for now, regEx is "\b([1-9][0-9]*+(\s?+\,\s?+[0-9]+)*+(\s?+\.\s?+[0-9]++)?)\b"
-					// but I need "billion"
 					regEx = RegExMatcher.NUMBER_PATTERN;
 				} else {
 					regEx = quantityPatterns[i - patterns.length - 1];
@@ -945,8 +943,6 @@ public class NETagger {
 					String sentence = StringUtils.concatWithSpaces(sentences[s]);
 					nes[s] = RegExMatcher.extractAllMatches(sentence, regEx);
 				}
-				
-				int s = 0; // dummy for setting breakpoints
 				
 			} else {
 				i -= allPatternNames.length;
