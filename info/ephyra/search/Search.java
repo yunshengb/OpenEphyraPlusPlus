@@ -150,7 +150,7 @@ public class Search {
 		waitForResults();
 		
 		// drop duplicates among results from KnowledgeMiners
-		results = dropDuplicates(results);
+		// results = dropDuplicates(results);
 		
 		return results.toArray(new Result[results.size()]);
 	}

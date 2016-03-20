@@ -46,6 +46,22 @@ import info.ephyra.search.searchers.IndriKM;
 
 import java.util.ArrayList;
 
+
+
+
+
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.StringTokenizer;
+
 /**
  * <code>OpenEphyra</code> is an open framework for question answering (QA).
  * 
@@ -88,17 +104,13 @@ public class OpenEphyra {
 		MsgPrinter.enableStatusMsgs(true);
 		MsgPrinter.enableErrorMsgs(true);
 
-
-		MsgPrinter.printStatusMsg("Arg:"+ args[0]);			
-		if (args.length != 1)
-		        return;
 		
 		// set log file and enable logging
 		Logger.setLogfile("log/OpenEphyra");
 		Logger.enableLogging(true);
 		
 		// initialize Ephyra and start command line interface
-		(new OpenEphyra()).commandLine(args[0].trim());
+		(new OpenEphyra()).commandLine();
 	}
 	
 	/**
@@ -347,49 +359,150 @@ public class OpenEphyra {
 	 * 
 	 * <p>The command <code>exit</code> can be used to quit the program.</p>
 	 */
-	public void commandLine(String query_input) {
+	public void commandLine() {
+		
+		
+		
+		BufferedReader br = null;
+		
+
+		try {
+
+			String sCurrentLine;
+
+			br = new BufferedReader(new FileReader("/Users/yba/Documents/U/Sirius/yodaqa-master/QPMClient/questions_80.txt"));
+
+			
+			int i = 0;
+			ArrayList<Long> durations = new ArrayList<Long>();
+			
+			while ((sCurrentLine = br.readLine()) != null) {
+				System.out.println("*********************************************************************************");
+				System.out.println("Question " + i);
+				Date start_date = new Date();
+				System.out.println("Start time: " + start_date); // start recording time
+				
+				
+				
+				String question = sCurrentLine;
+
+				if (question.equalsIgnoreCase("exit")) System.exit(0);
+				
+				// determine question type and extract question string
+				String type;
+				if (question.matches("(?i)" + FACTOID + ":.*+")) {
+					// factoid question
+					type = FACTOID;
+					question = question.split(":", 2)[1].trim();
+				} else if (question.matches("(?i)" + LIST + ":.*+")) {
+					// list question
+					type = LIST;
+					question = question.split(":", 2)[1].trim();
+				} else {
+					// question type unspecified
+					type = FACTOID;  // default type
+				}
+				
+				// ask question
+				Result[] results = new Result[0];
+				if (type.equals(FACTOID)) {
+					Logger.logFactoidStart(question);
+					results = askFactoid(question, FACTOID_MAX_ANSWERS,
+							FACTOID_ABS_THRESH);
+					Logger.logResults(results);
+					Logger.logFactoidEnd();
+				} else if (type.equals(LIST)) {
+					Logger.logListStart(question);
+					results = askList(question, LIST_REL_THRESH);
+					Logger.logResults(results);
+					Logger.logListEnd();
+				}
+				
+				// print answers
+				MsgPrinter.printAnswers(results);
+				
+				
+				Date end_date = new Date();
+				System.out.println("End time: " + end_date); // finish recording time
+				long duration  = end_date.getTime() - start_date.getTime();
+				long diff_in_seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
+				long minutes = diff_in_seconds / 60;
+				long seconds = diff_in_seconds % 60;
+				String duration_str = minutes + " min " + seconds + " sec";
+				System.out.println("The process for question " + i + " takes " + duration_str + ".");
+				System.out.println("*********************************************************************************\n");
+				
+				++i;
+				durations.add(diff_in_seconds);
+				
+				
+				
+				
+			}
+			
+			
+			double sum = 0.0;
+			for (Long j : durations) {
+				sum += j;
+			}
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@ Average: " + sum / 80 + " seconds.");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		
+		
+		
 //		while (true) {
-			// query user for question, quit if user types in "exit"
-//			MsgPrinter.printQuestionPrompt();
-//			String question = readLine().trim();
-
-			String question = query_input.trim();
-
-			if (question.equalsIgnoreCase("exit")) System.exit(0);
-			
-			// determine question type and extract question string
-			String type;
-			if (question.matches("(?i)" + FACTOID + ":.*+")) {
-				// factoid question
-				type = FACTOID;
-				question = question.split(":", 2)[1].trim();
-			} else if (question.matches("(?i)" + LIST + ":.*+")) {
-				// list question
-				type = LIST;
-				question = question.split(":", 2)[1].trim();
-			} else {
-				// question type unspecified
-				type = FACTOID;  // default type
-			}
-			
-			// ask question
-			Result[] results = new Result[0];
-			if (type.equals(FACTOID)) {
-				Logger.logFactoidStart(question);
-				results = askFactoid(question, FACTOID_MAX_ANSWERS,
-						FACTOID_ABS_THRESH);
-				Logger.logResults(results);
-				Logger.logFactoidEnd();
-			} else if (type.equals(LIST)) {
-				Logger.logListStart(question);
-				results = askList(question, LIST_REL_THRESH);
-				Logger.logResults(results);
-				Logger.logListEnd();
-			}
-			
-			// print answers
-			MsgPrinter.printAnswers(results);
-		//}
+//			// query user for question, quit if user types in "exit"
+////			MsgPrinter.printQuestionPrompt();
+////			String question = readLine().trim();
+//
+//		MsgPrinter.printQuestionPrompt();
+//		String question = readLine().trim();
+//
+//			if (question.equalsIgnoreCase("exit")) System.exit(0);
+//			
+//			// determine question type and extract question string
+//			String type;
+//			if (question.matches("(?i)" + FACTOID + ":.*+")) {
+//				// factoid question
+//				type = FACTOID;
+//				question = question.split(":", 2)[1].trim();
+//			} else if (question.matches("(?i)" + LIST + ":.*+")) {
+//				// list question
+//				type = LIST;
+//				question = question.split(":", 2)[1].trim();
+//			} else {
+//				// question type unspecified
+//				type = FACTOID;  // default type
+//			}
+//			
+//			// ask question
+//			Result[] results = new Result[0];
+//			if (type.equals(FACTOID)) {
+//				Logger.logFactoidStart(question);
+//				results = askFactoid(question, FACTOID_MAX_ANSWERS,
+//						FACTOID_ABS_THRESH);
+//				Logger.logResults(results);
+//				Logger.logFactoidEnd();
+//			} else if (type.equals(LIST)) {
+//				Logger.logListStart(question);
+//				results = askList(question, LIST_REL_THRESH);
+//				Logger.logResults(results);
+//				Logger.logListEnd();
+//			}
+//			
+//			// print answers
+//			MsgPrinter.printAnswers(results);
+//		}
 	}
 	
 	/**
